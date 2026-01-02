@@ -126,17 +126,15 @@ The platform consists of three microservices that work together to process trans
 
 **AWS S3:** Audit-grade storage for all transaction events in Parquet format, partitioned by date and hour.
 
-<img width="526" height="230" alt="Screenshot 2026-01-02 at 12 33 03 PM" src="https://github.com/user-attachments/assets/2f381b76-39a9-4bb6-9a08-52ae0ba8f758" />
-
-
 **Prometheus + Grafana:** Observability stack for monitoring 
 service health, latency, throughput, and feature freshness.
 
-<img width="1308" height="688" alt="Screenshot 2026-01-02 at 11 26 13 AM" src="https://github.com/user-attachments/assets/da1c6745-25b4-445c-8550-2d56d9d4447a" />
-
 **AWS Athena:** SQL interface for querying historical transaction data stored in S3.
 
-*[Screenshot: Grafana dashboard showing service metrics]*
+<img width="526" height="230" alt="Screenshot 2026-01-02 at 12 33 03 PM" src="https://github.com/user-attachments/assets/2f381b76-39a9-4bb6-9a08-52ae0ba8f758" />
+
+<img width="1308" height="688" alt="Screenshot 2026-01-02 at 11 26 13 AM" src="https://github.com/user-attachments/assets/da1c6745-25b4-445c-8550-2d56d9d4447a" />
+
 
 ## Performance Metrics
 
