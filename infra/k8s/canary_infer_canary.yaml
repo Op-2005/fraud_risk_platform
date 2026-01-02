@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: infer-canary
+  namespace: fraud-system
+  labels:
+    app: infer
+    version: canary
+    service: fraud-detection
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: infer
+      version: canary
+  template:
+    metadata:
+      labels:
+        app: infer
+        version: canary
+        service: fraud-detection
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+      - name: infer
+        image: 245872626324.dkr.ecr.us-west-2.amazonaws.com/fraud-infer:v2-canary
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+          name: http
+        env:
+        - name: REDIS_HOST
+          value: "redis-master"
+        - name: REDIS_PORT
+          value: "6379"
+        - name: MODEL_PATH
+          value: "/app/model.pt"
+        - name: THRESHOLD_ALLOW
+          value: "0.3"
+        - name: THRESHOLD_BLOCK
+          value: "0.7"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "300m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 3
+

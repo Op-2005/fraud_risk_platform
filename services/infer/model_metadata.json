@@ -1,0 +1,59 @@
+{
+  "model_type": "LogisticRegression",
+  "framework": "sklearn \u2192 PyTorch \u2192 TorchScript",
+  "training_date": "2026-01-01T17:29:03.487618",
+  "features": {
+    "names": [
+      "V1",
+      "V2",
+      "V3",
+      "V4",
+      "V5",
+      "V6",
+      "V7",
+      "V8",
+      "V9",
+      "V10",
+      "V11",
+      "V12",
+      "V13",
+      "V14",
+      "V15",
+      "V16",
+      "V17",
+      "V18",
+      "V19",
+      "V20",
+      "V21",
+      "V22",
+      "V23",
+      "V24",
+      "V25",
+      "V26",
+      "V27",
+      "V28",
+      "Amount_normalized"
+    ],
+    "count": 29
+  },
+  "performance": {
+    "pr_auc_val": 0.6736891234487165,
+    "pr_auc_test": 0.8025688875856202,
+    "roc_auc_val": 0.969213321934498,
+    "optimal_threshold": 0.8599999999999995,
+    "fpr_at_threshold": 0.004970924779591071,
+    "recall_at_threshold": 0.8513513513513513,
+    "precision_at_threshold": 0.2290909090909091
+  },
+  "thresholds": {
+    "allow": 0.3,
+    "step_up": 0.7,
+    "block": 0.7
+  },
+  "training_data": {
+    "n_train": 199364,
+    "n_val": 42721,
+    "n_test": 42722,
+    "fraud_rate": 0.0017254870488152324
+  }
+}

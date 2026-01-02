@@ -1,0 +1,18 @@
+# ServiceAccount for ingest service with IRSA annotation
+# NOTE: This is created automatically by 04_setup_irsa.sh
+# This file is kept as reference documentation only.
+# 
+# The actual ServiceAccount is created by eksctl with the IRSA annotation:
+# eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/eksctl-...
+#
+# To recreate manually, run: ./infra/aws/04_setup_irsa.sh
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ingest-sa
+  namespace: fraud-system
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::ACCOUNT_ID:role/eksctl-fraud-detection-cluster-addon-iamserviceac-Role1-XXXXX"
+    # This annotation is automatically set by eksctl when running 04_setup_irsa.sh
+

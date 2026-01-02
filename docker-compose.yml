@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --maxmemory 512mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  ingest:
+    build:
+      context: ./services/ingest
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - S3_BUCKET=/app/data/local-s3
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - STREAM_KEY=transaction_events
+      - FLUSH_INTERVAL=10
+      - BATCH_SIZE=100
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./data/local-s3:/app/data/local-s3
+
+  featurizer:
+    build:
+      context: ./services/featurizer
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8000"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - STREAM_KEY=transaction_events
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  infer:
+    build:
+      context: ./services/infer
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8000"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - MODEL_PATH=/app/model.pt
+      - THRESHOLD_ALLOW=0.3
+      - THRESHOLD_BLOCK=0.7
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./services/infer/model.pt:/app/model.pt:ro
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infra/observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - ./infra/observability/grafana-dashboard.json:/etc/grafana/provisioning/dashboards/fraud.json:ro

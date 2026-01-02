@@ -1,0 +1,56 @@
+# EKS cluster configuration for fraud detection platform
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: fraud-detection-cluster
+  region: us-west-2
+  version: "1.29"
+
+iam:
+  withOIDC: true
+
+managedNodeGroups:
+  - name: fraud-ng-1
+    instanceType: t3.medium
+    desiredCapacity: 1
+    minSize: 1
+    maxSize: 2
+    volumeSize: 30
+    volumeType: gp3
+    ssh:
+      allow: false
+    iam:
+      withAddonPolicies:
+        imageBuilder: true
+        autoScaler: true
+        externalDNS: true
+        certManager: true
+        albIngress: true
+        ebs: true
+        efs: true
+        cloudWatch: true
+    tags:
+      Project: fraud-detection
+      Environment: production
+    labels:
+      workload: fraud-services
+
+cloudWatch:
+  clusterLogging:
+    enableTypes:
+      - api
+      - audit
+      - authenticator
+      - controllerManager
+      - scheduler
+
+addons:
+  - name: vpc-cni
+    version: latest
+  - name: coredns
+    version: latest
+  - name: kube-proxy
+    version: latest
+  - name: aws-ebs-csi-driver
+    version: latest

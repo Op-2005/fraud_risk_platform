@@ -1,0 +1,36 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: infer
+  namespace: fraud-system
+spec:
+  hosts:
+  - infer-canary-service
+  http:
+  - route:
+    - destination:
+        host: infer-canary-service
+        subset: stable
+      weight: 90
+    - destination:
+        host: infer-canary-only
+        subset: canary
+      weight: 10
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: infer
+  namespace: fraud-system
+spec:
+  host: infer-canary-service
+  subsets:
+  - name: stable
+    labels:
+      version: stable
+  host: infer-canary-only
+  subsets:
+  - name: canary
+    labels:
+      version: canary
+

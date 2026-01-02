@@ -1,0 +1,23 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'ingest'
+    static_configs:
+      - targets: ['ingest:8000']
+        labels:
+          service: 'ingest'
+
+  - job_name: 'featurizer'
+    static_configs:
+      - targets: ['featurizer:8000']
+        labels:
+          service: 'featurizer'
+
+  - job_name: 'infer'
+    static_configs:
+      - targets: ['infer:8000']
+        labels:
+          service: 'infer'
+

@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: infer-canary-service
+  namespace: fraud-system
+  labels:
+    app: infer
+    service: fraud-detection
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8000
+    targetPort: 8000
+    protocol: TCP
+    name: http
+  selector:
+    app: infer
+    version: stable
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: infer-canary-only
+  namespace: fraud-system
+  labels:
+    app: infer
+    service: fraud-detection
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8000
+    targetPort: 8000
+    protocol: TCP
+    name: http
+  selector:
+    app: infer
+    version: canary
+

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: fraud-system
+  labels:
+    name: fraud-system
+    app: fraud-detection
+
