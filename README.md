@@ -192,7 +192,7 @@ See `docs/GETTING_STARTED.md` for detailed setup instructions. Quick start:
    ./05_deploy_to_ec2.sh <EC2_IP>  # Deploy to EC2 instance
    ```
 
-For Kubernetes deployment, see `docs/OPERATIONS.md` and `infra/k8s/` directory.
+For Kubernetes deployment, see `infra/k8s/` directory.
 
 ## Project Structure
 
