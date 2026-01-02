@@ -104,25 +104,10 @@ The platform consists of three microservices that work together to process trans
 
 **Technology:** FastAPI, PyTorch (TorchScript), Redis Hashes
 
-**Example API Response:**
-```bash
-$ curl -X POST http://localhost:8001/predict \
-    -H "Content-Type: application/json" \
-    -d '{"user_id": "user_4562"}'
+**Example API Response from Testing:**
 
-{
-  "user_id": "user_4562",
-  "risk_score": 0.6234,
-  "decision": "step_up",
-  "reasons": [
-    "high_velocity_5m",
-    "unusual_amount",
-    "high_merchant_velocity"
-  ]
-}
-```
+<img width="299" height="192" alt="Screenshot 2026-01-02 at 12 56 08 PM" src="https://github.com/user-attachments/assets/a45bab3d-4406-4a8b-bc95-30a5ec2e04ae" />
 
-*[Screenshot: Terminal showing curl command and JSON response]*
 
 ### Data Flow
 
@@ -141,7 +126,13 @@ $ curl -X POST http://localhost:8001/predict \
 
 **AWS S3:** Audit-grade storage for all transaction events in Parquet format, partitioned by date and hour.
 
-**Prometheus + Grafana:** Observability stack for monitoring service health, latency, throughput, and feature freshness.
+<img width="526" height="230" alt="Screenshot 2026-01-02 at 12 33 03 PM" src="https://github.com/user-attachments/assets/2f381b76-39a9-4bb6-9a08-52ae0ba8f758" />
+
+
+**Prometheus + Grafana:** Observability stack for monitoring 
+service health, latency, throughput, and feature freshness.
+
+<img width="1308" height="688" alt="Screenshot 2026-01-02 at 11 26 13 AM" src="https://github.com/user-attachments/assets/da1c6745-25b4-445c-8550-2d56d9d4447a" />
 
 **AWS Athena:** SQL interface for querying historical transaction data stored in S3.
 
@@ -161,9 +152,10 @@ The P95 latency exceeds the 150ms target on a t3.micro instance due to resource 
 Model performance metrics:
 - PR-AUC: ~0.83
 - Recall at 0.5% FPR: ~71%
+ 
+<img width="320" height="293" alt="Screenshot 2026-01-02 at 11 35 11 AM" src="https://github.com/user-attachments/assets/8448378d-dc22-4908-a4af-453d1b5df07c" />
 
-*[Screenshot: Grafana dashboard showing latency percentiles over time]*
-
+<img width="486" height="289" alt="Screenshot 2026-01-02 at 11 35 25 AM" src="https://github.com/user-attachments/assets/0ca9ae8a-e79d-4f79-87be-a89dc512e518" />
 
 
 ## Challenges & Future Improvements
